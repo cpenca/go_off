@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The 2nd International Symposium on Going Off</title>
+
+  <style>
+    :root{
+      --bg:#f5f5f7;
+      --paper:#fffef8;
+      --border:rgba(0,0,0,.12);
+      --muted:rgba(0,0,0,.6);
+      --muted2:rgba(0,0,0,.45);
+      --accent:#ffd36a;
+      --radius:18px;
+      --shadow:0 12px 40px rgba(0,0,0,.12);
+      --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:linear-gradient(#fff,var(--bg));
+      font-family:var(--sans);
+      color:#111;
+      display:flex;
+      justify-content:center;
+      padding:32px 16px;
+    }
+
+    .window{
+      width:min(900px,100%);
+      background:rgba(255,255,255,.65);
+      backdrop-filter:blur(18px);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    /* Fake macOS title bar */
+    .titlebar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,.75);
+    }
+
+    .dot{width:12px;height:12px;border-radius:50%}
+    .red{background:#ff5f57}
+    .yellow{background:#febc2e}
+    .green{background:#28c840}
+
+    .paper{
+      background:var(--paper);
+      padding:28px;
+    }
+
+    h1{
+      margin:0 0 10px 0;
+      font-size:32px;
+      letter-spacing:-.03em;
+      line-height:1.1;
+    }
+
+    .meta{
+      color:var(--muted);
+      font-size:15px;
+      margin-bottom:18px;
+    }
+
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      margin-bottom:20px;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .button{
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:14px;
+      background:linear-gradient(#fff,var(--accent));
+      border:1px solid var(--border);
+      text-decoration:none;
+      font-weight:600;
+      color:#111;
+      margin-bottom:20px;
+    }
+
+    .section{
+      border-top:1px dashed var(--border);
+      padding-top:14px;
+      margin-top:18px;
+    }
+
+    .section strong{
+      display:block;
+      margin-bottom:6px;
+    }
+
+    .calendar a{
+      display:inline-block;
+      margin-right:12px;
+      font-size:14px;
+    }
+
+    footer{
+      margin-top:24px;
+      font-size:14px;
+      color:var(--muted2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+
+    <div class="paper">
+      <div class="logo">
+        <!-- put your pelican image here -->
+        <img src="assets/pelican.png" alt="Pelican logo">
+      </div>
+
+      <h1>The 2nd International Symposium on Going Off</h1>
+      <div class="meta">
+        Sunday, February 1 · 4:00 PM
+      </div>
+
+      <!-- replace # with your Google Form -->
+      <a class="button" href="#" target="_blank">
+        Sign up to give a talk
+      </a>
+
+      <div class="section">
+        <strong>Location</strong>
+        Design District (exact location announced soon)
+      </div>
+
+      <div class="section">
+        <strong>Agenda</strong>
+        Will be posted mid-January.
+      </div>
+
+      <div class="section calendar">
+        <strong>Add to calendar</strong>
+        <a id="googleCal" href="#" target="_blank">Google Calendar</a>
+        <a id="ics" download="GoingOff.ics">Apple / Outlook</a>
+      </div>
+
+      <div class="section">
+        <strong>Questions, comments?</strong>
+        <div id="email"></div>
+        Instagram: <a href="https://instagram.com/cocopenca" target="_blank">@cocopenca</a>
+      </div>
+
+      <footer>
+        Hosted on GitHub Pages · cpenca
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- CONFIG ---------- */
+    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc7ONOpNaBfO6mepC66AV4El0lrz8ADUjLRn1p6F7mqwVcOAQ/viewform?usp=dialog"; // <-- paste Google Form link here
+
+    const EVENT = {
+      title: "The 2nd International Symposium on Going Off",
+      start: "2026-02-01T16:00:00",
+      duration: 120,
+      location: "Design District",
+      description: "Call for talks. Agenda posted mid-January."
+    };
+
+    document.querySelector(".button").href = FORM_URL;
+
+    function pad(n){return String(n).padStart(2,"0")}
+    function utc(d){
+      return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+
+             "T"+pad(d.getUTCHours())+pad(d.getUTCMinutes())+"00Z";
+    }
+
+    const start = new Date(EVENT.start);
+    const end = new Date(start.getTime() + EVENT.duration*60000);
+
+    document.getElementById("googleCal").href =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text="+encodeURIComponent(EVENT.title) +
+      "&dates="+utc(start)+"/"+utc(end) +
+      "&details="+encodeURIComponent(EVENT.description) +
+      "&location="+encodeURIComponent(EVENT.location);
+
+    const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${EVENT.title}
+DTSTART:${utc(start)}
+DTEND:${utc(end)}
+DESCRIPTION:${EVENT.description}
+LOCATION:${EVENT.location}
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob([ics], {type:"text/calendar"});
+    document.getElementById("ics").href = URL.createObjectURL(blob);
+
+    /* email obfuscation */
+    const user="corypenca",domain="gmail.com";
+    const email=user+"@"+domain;
+    document.getElementById("email").innerHTML =
+      'Email: <a href="mailto:'+email+'">'+email+'</a>';
+  </script>
+</body>
+</html>
