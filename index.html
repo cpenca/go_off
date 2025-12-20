@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The 2nd International Symposium on Going Off</title>
 
   <style>
@@ -14,15 +14,16 @@
       --muted2:rgba(0,0,0,.45);
       --accent:#ffd36a;
       --radius:18px;
-      --shadow:0 12px 40px rgba(0,0,0,.12);
+      --shadow:0 14px 44px rgba(0,0,0,.14);
       --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
-      background:linear-gradient(#fff,var(--bg));
       font-family:var(--sans);
+      background:linear-gradient(#fff,var(--bg));
       color:#111;
       display:flex;
       justify-content:center;
@@ -30,7 +31,7 @@
     }
 
     .window{
-      width:min(900px,100%);
+      width:min(920px,100%);
       background:rgba(255,255,255,.65);
       backdrop-filter:blur(18px);
       border:1px solid var(--border);
@@ -39,10 +40,9 @@
       overflow:hidden;
     }
 
-    /* Fake macOS title bar */
+    /* macOS-style title bar */
     .titlebar{
       display:flex;
-      align-items:center;
       gap:10px;
       padding:12px 16px;
       border-bottom:1px solid var(--border);
@@ -59,26 +59,13 @@
       padding:28px;
     }
 
-    h1{
-      margin:0 0 10px 0;
-      font-size:32px;
-      letter-spacing:-.03em;
-      line-height:1.1;
-    }
-
-    .meta{
-      color:var(--muted);
-      font-size:15px;
-      margin-bottom:18px;
-    }
-
     .logo{
-      width:64px;
-      height:64px;
+      width:68px;
+      height:68px;
       border-radius:14px;
       overflow:hidden;
       border:1px solid var(--border);
-      margin-bottom:20px;
+      margin-bottom:18px;
     }
 
     .logo img{
@@ -87,9 +74,22 @@
       object-fit:cover;
     }
 
+    h1{
+      margin:0 0 10px 0;
+      font-size:32px;
+      letter-spacing:-.03em;
+      line-height:1.1;
+    }
+
+    .meta{
+      font-size:15px;
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+
     .button{
       display:inline-block;
-      padding:12px 16px;
+      padding:12px 18px;
       border-radius:14px;
       background:linear-gradient(#fff,var(--accent));
       border:1px solid var(--border);
@@ -103,21 +103,23 @@
       border-top:1px dashed var(--border);
       padding-top:14px;
       margin-top:18px;
+      font-size:15px;
+      color:var(--muted);
     }
 
     .section strong{
       display:block;
       margin-bottom:6px;
+      color:#111;
     }
 
     .calendar a{
-      display:inline-block;
-      margin-right:12px;
+      margin-right:14px;
       font-size:14px;
     }
 
     footer{
-      margin-top:24px;
+      margin-top:26px;
       font-size:14px;
       color:var(--muted2);
     }
@@ -134,23 +136,22 @@
 
     <div class="paper">
       <div class="logo">
-        <!-- put your pelican image here -->
         <img src="pelican.png" alt="Pelican logo">
       </div>
 
       <h1>The 2nd International Symposium on Going Off</h1>
+
       <div class="meta">
-        Sunday, February 1 · 4:00 PM
+        Sunday, February 1 · 4:00 PM – 8:00 PM
       </div>
 
-      <!-- replace # with your Google Form -->
-      <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSc7ONOpNaBfO6mepC66AV4El0lrz8ADUjLRn1p6F7mqwVcOAQ/viewform?usp=dialog" target="_blank">
+      <a class="button" href="https://forms.gle/x1YpGUDzXkLas3UDA" target="_blank">
         Sign up to give a talk
       </a>
 
       <div class="section">
         <strong>Location</strong>
-        Design District (exact location announced soon)
+        Design District — exact location announced soon
       </div>
 
       <div class="section">
@@ -171,24 +172,20 @@
       </div>
 
       <footer>
-       
+        -
       </footer>
     </div>
   </div>
 
   <script>
-    /* ---------- CONFIG ---------- */
-    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc7ONOpNaBfO6mepC66AV4El0lrz8ADUjLRn1p6F7mqwVcOAQ/viewform?usp=dialog"; // <-- paste Google Form link here
-
+    /* EVENT CONFIG */
     const EVENT = {
       title: "The 2nd International Symposium on Going Off",
       start: "2026-02-01T16:00:00",
-      duration: 240,
+      durationMinutes: 240,
       location: "Design District",
       description: "Call for talks. Agenda posted mid-January."
     };
-
-    document.querySelector(".button").href = FORM_URL;
 
     function pad(n){return String(n).padStart(2,"0")}
     function utc(d){
@@ -197,7 +194,7 @@
     }
 
     const start = new Date(EVENT.start);
-    const end = new Date(start.getTime() + EVENT.duration*60000);
+    const end = new Date(start.getTime() + EVENT.durationMinutes*60000);
 
     document.getElementById("googleCal").href =
       "https://calendar.google.com/calendar/render?action=TEMPLATE" +
@@ -218,8 +215,8 @@ LOCATION:${EVENT.location}
 END:VEVENT
 END:VCALENDAR`;
 
-    const blob = new Blob([ics], {type:"text/calendar"});
-    document.getElementById("ics").href = URL.createObjectURL(blob);
+    document.getElementById("ics").href =
+      URL.createObjectURL(new Blob([ics], {type:"text/calendar"}));
 
     /* email obfuscation */
     const user="corypenca",domain="gmail.com";
